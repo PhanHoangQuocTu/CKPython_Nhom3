@@ -1,0 +1,85 @@
+ {% extends 'home.html' %}
+ {% load static %}
+    {%block content%}
+
+    <div class="new_arrivals">
+		<div class="container">
+			<div class="row">
+				<div class="col text-center">
+					<div class="section_title new_arrivals_title">
+						<h2>New Products</h2>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col">
+					<div class="product-grid" data-isotope='{ "itemSelector": ".product-item", "layoutMode": "fitRows" }'>
+
+						<!-- Product 1 -->
+                    {% for book in book_list %}
+						<div style="margin-bottom:10px;padding-bottom:5px" class="product-item men">
+							<div class="product discount product_filter">
+								<div class="product_image">
+									<img src="/project/media/{{book.image}}" alt="">
+								</div>
+								<div class="favorite favorite_left"></div>
+								<div class="product_bubble product_bubble_right product_bubble_red d-flex flex-column align-items-center"><span style="font-size:9px;text-transform: none;">{{book.category}}</span></div>
+								<div class="product_info">
+									<h6 class="product_name"><a href="{% url 'detailProduct' book.id %}">{{book.name}}</a></h6>
+                                    {% comment %} <p style="color:red;font-size:13px" class="product_name">{{book.category}}</p> {% endcomment %}
+									<div class="product_price">{{book.price}}đ</div>
+								</div>
+							</div>
+
+                            {% if b %}
+                       
+                                <div style="margin-left:0;width:100%" class="red_button add_to_cart_button"><a style="width:100%" href="{% url 'updateItemCart' user.id book.id %}">add to cart</a></div>
+                            
+                            {% else %}
+                                <div style="margin-left:0;width=100%" class="red_button add_to_cart_button"><a style="width:100%" href="{% url 'login' %}">add to cart</a></div>
+                        
+                            {% endif %}
+							
+						</div>
+                    {% endfor %}
+											
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+        
+
+
+
+
+    <div class="pagination">
+        <ul class="pagination_number">    
+          
+    {% if book_list.has_previous %}    
+          <a href="?page={{book_list.previous_page_number}}"><li>&lt;</li></a>
+    {%else%}
+        <a href="?page=1"><li>&lt;</li></a>
+     {%endif%}
+     {% for i in book_list.paginator.page_range %}
+        
+    {%if i == book_list.number %}
+            <a class="is-active" href="?page={{i}}"><li>{{i}}</li></a>
+    {%else%}
+            <a  href="?page={{i}}"><li>{{i}}</li></a>
+    {%endif%} 
+       
+       
+    {%endfor%}
+    {% if book_list.has_next %}
+          <a href="?page={{book_list.next_page_number}}"><li>&gt;</li></a>
+    {%else%}
+          <a href="?page=6"><li>&gt;</li></a>
+    {%endif%}
+        </ul>
+    </div>
+
+
+    {%endblock%}
+   
